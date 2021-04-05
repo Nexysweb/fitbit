@@ -12,6 +12,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "test": "echo \"no test setup\"",
     "watch": "tsc-watch --onSuccess \"node ./dist/index.js\""
   },
   "dependencies": {
