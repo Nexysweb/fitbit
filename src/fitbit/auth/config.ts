@@ -1,3 +1,4 @@
+// my apps: https://dev.fitbit.com/apps
 import Dotenv from "dotenv";
 
 Dotenv.config();
