@@ -8,6 +8,25 @@ import * as TokenService from "./token";
 const app = new Koa();
 const router = new Router();
 
+router.get("/auth/url", async (ctx) => {
+  const url = FitBitAuthService.getOauthUrl();
+  ctx.body = { url };
+});
+
+router.get("/auth/redirect", async (ctx) => {
+  const { code } = ctx.query;
+  if (code && typeof code === "string") {
+    const r = await FitBitAuthService.getToken(code);
+    console.log(r);
+    TokenService.set(r, ctx);
+
+    ctx.body = { user_id: r.user_id, expires: r.expires_in };
+    return;
+  }
+
+  ctx.throw(401, "no code given");
+});
+
 router.all("/", async (ctx) => {
   const { code } = ctx.query;
 
@@ -75,7 +94,11 @@ router.get("/activities", async (ctx) => {
   ctx.body = await FitBitService.activities(token);
 });
 
+router.get("/arequest", async (ctx) => {
+  ctx.body = "hello";
+});
+
 app.use(router.routes());
 
-const port = 8080;
+const port = 3001;
 app.listen(port, () => console.log(`Server started at port ${port}`));
